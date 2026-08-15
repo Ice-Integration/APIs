@@ -1,0 +1,22 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: opsmind
+      POSTGRES_USER: opsmind
+      POSTGRES_PASSWORD: opsmind
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsmind -d opsmind"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
