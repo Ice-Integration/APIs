@@ -2,7 +2,7 @@
 
 A portfolio-grade AI engineering project that demonstrates retrieval-augmented generation, MCP tool servers, GraphQL, agent orchestration, evaluation, observability, and production backend practices.
 
-## Real-world problem
+## Task
 
 Engineering and operations teams lose time searching across runbooks, incident notes, service documentation, and internal APIs. Existing chatbots often hallucinate, cannot cite sources, and cannot safely take actions.
 
