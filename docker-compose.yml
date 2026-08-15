@@ -12,11 +12,34 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   api:
     build: .
     env_file: .env
     ports:
       - "8000:8000"
     depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  ingestion-worker:
+    build: .
+    env_file: .env
+    command: python -m scripts.run_ingestion_worker
+    depends_on:
+      redis:
+        condition: service_healthy
       db:
         condition: service_healthy
