@@ -1,0 +1,12 @@
+[
+  {
+    "question": "What happens when checkout latency breaches the SLO for 10 minutes?",
+    "expected_source": "Checkout API SLO Runbook",
+    "required_terms": ["SEV-2", "payments"]
+  },
+  {
+    "question": "Can the AI publish a SEV-2 incident without approval?",
+    "expected_source": "Incident Management Policy",
+    "required_terms": ["draft", "human"]
+  }
+]
