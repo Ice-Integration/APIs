@@ -19,10 +19,10 @@ class PromptGuard:
     """
 
     _blocked_patterns = (
-        re.compile(r"ignore (all|any|the) previous instructions", re.I),
-        re.compile(r"reveal (the )?(system|developer) prompt", re.I),
-        re.compile(r"print (all )?(secrets|credentials|api keys)", re.I),
-        re.compile(r"bypass (authorization|rbac|access control)", re.I),
+        re.compile(r"ignore (all|any|the) previous instructions", re.IGNORECASE),
+        re.compile(r"reveal (the )?(system|developer) prompt", re.IGNORECASE),
+        re.compile(r"print (all )?(secrets|credentials|api keys)", re.IGNORECASE),
+        re.compile(r"bypass (authorization|rbac|access control)", re.IGNORECASE),
     )
 
     def inspect(self, text: str) -> GuardResult:

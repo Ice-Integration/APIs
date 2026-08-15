@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from typing import Annotated
 
 from fastapi import Depends, FastAPI
 from fastapi.responses import StreamingResponse
@@ -27,13 +28,13 @@ class AskRequest(BaseModel):
     question: str
 
 
-def get_engine(settings: Settings = Depends(get_settings)) -> AsyncEngine:
+def get_engine(settings: Annotated[Settings, Depends(get_settings)]) -> AsyncEngine:
     return create_async_engine(settings.database_url, pool_pre_ping=True)
 
 
 def get_rag_service(
-    settings: Settings = Depends(get_settings),
-    engine: AsyncEngine = Depends(get_engine),
+    settings: Annotated[Settings, Depends(get_settings)],
+    engine: Annotated[AsyncEngine, Depends(get_engine)],
 ) -> RAGService:
     return RAGService(
         engine=engine,
@@ -48,7 +49,10 @@ async def health() -> dict[str, str]:
 
 
 @app.post("/api/v1/ask")
-async def ask(request: AskRequest, rag: RAGService = Depends(get_rag_service)) -> dict:
+async def ask(
+    request: AskRequest,
+    rag: Annotated[RAGService, Depends(get_rag_service)],
+) -> dict:
     inspection = PromptGuard().inspect(request.question)
     if not inspection.allowed:
         return {"status": "blocked", "reason": inspection.reason}
@@ -59,7 +63,7 @@ async def ask(request: AskRequest, rag: RAGService = Depends(get_rag_service)) -
 @app.post("/api/v1/ask/stream")
 async def ask_stream(
     request: AskRequest,
-    rag: RAGService = Depends(get_rag_service),
+    rag: Annotated[RAGService, Depends(get_rag_service)],
 ) -> StreamingResponse:
     inspection = PromptGuard().inspect(request.question)
 
