@@ -8,7 +8,10 @@ class Settings(BaseSettings):
     openai_chat_model: str = "gpt-5-mini"
     openai_embedding_model: str = "text-embedding-3-small"
     database_url: str = "postgresql+asyncpg://opsmind:opsmind@localhost:5432/opsmind"
-    rag_top_k: int = 5
+    redis_url: str = "redis://localhost:6379/0"
+    otel_exporter_endpoint: str | None = None
+    rag_top_k: int = 8
+    conversation_ttl_seconds: int = 3600
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
